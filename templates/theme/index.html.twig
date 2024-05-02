@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Theme index
+{% endblock %}
+
+{% block body %}
+
+<div class="container my-5">
+	<h1 class="d-flex justify-content-center">Theme index</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Theme</th>
+					<th>Img</th>
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for theme in themes %}
+					<tr>
+						<td>{{ theme.id }}</td>
+						<td><a href="{{ path('app_question_detail', {'id': theme.id}) }}">{{ theme.theme }}</a> </td>
+						<td>
+							<img src="{{asset('uploads/image/' ~ theme.img)}}" " style='height:100px'"></td>
+						<td>
+							<a href="{{ path('app_theme_edit', {'id': theme.id}) }}">edit</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="4">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<a href="{{ path('app_theme_new') }}">Create new</a>
+	</div>
+{% endblock %}
+	

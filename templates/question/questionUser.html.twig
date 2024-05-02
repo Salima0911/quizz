@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Quiz</h1>
+    {% if questionFiltered is not empty %}
+        <form id="quiz-form">
+            {% for question in questionFiltered %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title text-center">{{ question.question }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if question.img %}
+                        <img src="{{ asset('uploads/image/' ~ question.img) }}" class="img-fluid mb-3" alt="Question Image">
+                    {% endif %}
+                    <div class="btn-group-vertical" role="group" aria-label="Réponses">
+                        {% for reponse in reponses %}
+                            {% if question.id == reponse.idQuestion.id  %}
+                                <button type="button" class="btn btn-light response" data-response-id="{{ reponse.id }}" data-correct="{{ reponse.correct ? 'true' : 'false' }}">{{ reponse.reponse }}</button>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Soumettre</button>
+            </div>
+        </form>
+    {% else %}
+        <p class="text-center">Aucune question</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+n9pe0sSVHOK8t7f3Qvq4oszcNH3voFVl8x84pE" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function() {
+    $('#quiz-form').submit(function(event) {
+        event.preventDefault();
+
+        // Récupérer la réponse sélectionnée
+        const selectedResponse = $('.response.selected');
+        const responseId = selectedResponse ? selectedResponse.attr('data-response-id') : null;
+
+        // Envoyer la réponse au serveur
+        $.ajax({
+            url: '{{ path('app_reponse_submit') }}',
+            method: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ responseId: responseId }),
+            success: function(data) {
+                if (data.isCorrect) {
+                    // Traitement si la réponse est correcte
+                    selectedResponse.addClass('correct');
+                } else {
+                    // Traitement si la réponse est incorrecte
+                    selectedResponse.addClass('incorrect');
+                }
+            },
+            error: function(error) {
+                console.error('Erreur lors de la soumission de la réponse :', error);
+            }
+        });
+    });
+
+    // Gérer le clic sur les réponses
+    $('.response').click(function() {
+        const responses = $('.response');
+        responses.prop('disabled', true);
+        $(this).prop('disabled', false);
+        responses.removeClass('selected');
+        $(this).addClass('selected');
+
+        if ($(this).data('correct') === true) {
+            $(this).addClass('correct');
+        } else {
+            $(this).addClass('incorrect');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste de quiz{% endblock %}
+
+{% block body %}
+
+<div class="container my-5">
+    <div>
+        <div class="card-body">
+
+            <div class="row">
+                {% for theme in themes %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ asset('uploads/image/' ~ theme.img) }}" class="card-img-top" alt="{{ theme.theme }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ theme.theme }}</h5>
+                            <a href="{{ path('app_questionUser_detail', {'id': theme.id}) }}" class="btn btn-grad">Commencer</a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col">
+                    <div class="alert alert-info text-center" role="alert">
+                        Pas de quiz existant
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

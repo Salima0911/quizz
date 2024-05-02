@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card" id="welcome-card">
+                    <div class="card-body">
+                        <h1 class="text-center">Bienvenue sur QuizMaster!</h1>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center">
+                        <a href="{{ path('app_theme_index_quiz') }}" class="btn btn-grad">Commencer un quizz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

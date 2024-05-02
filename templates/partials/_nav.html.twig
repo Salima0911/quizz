@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container">
+		<a class="navbar-brand" href="{{ path('app_home') }}">
+			<img src="{{ asset('img/logo.png') }}" id="imgSize" alt="Logo">
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item active">
+					<a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
+				</li>
+
+				{% if is_granted('ROLE_USER') %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('app_theme_index_quiz')}}">Quiz</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Scores</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Contact</a>
+					</li>
+
+				{% endif %}
+
+
+			</ul>
+
+			<div class="d-flex">
+				{% if is_granted('ROLE_ADMIN') %}
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('app_theme_index')}}">Gestion Quiz</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('app_user_index')}}">Gestion Utilisateurs</a>
+					</li>
+					</ul>
+				{% endif %}
+				{% if is_granted('ROLE_USER') %}
+					<a class="btn btn-grad me-2" href="{{path('app_profile')}}">Profil</a>
+					<a class="btn btn-grad me-2" href="{{path('app_logout')}}">Deconnexion</a>
+				{% else %}
+
+					<a class="btn btn-grad me-2" href="{{path('app_login')}}">Connexion</a>
+					<a class="btn btn-grad me-2" href="{{path('app_register')}}">Inscription</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</nav>
